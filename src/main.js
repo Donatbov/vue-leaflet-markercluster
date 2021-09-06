@@ -1,4 +1,4 @@
-import App from './App.vue'
+import App from './Example.vue'
 import { createApp } from 'vue'
 
 const app = createApp(App)

@@ -42,7 +42,7 @@ function rand (n) {
 }
 
 export default {
-  name: 'App',
+  name: 'Example',
   components: {
     LCustomMarkerCluster,
     LMap,
