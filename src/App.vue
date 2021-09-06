@@ -26,7 +26,7 @@
 <script>
 import 'leaflet/dist/leaflet.css'
 import { latLng } from 'leaflet'
-import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
+import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
 
 function rand (n) {
   const max = n + 0.1
@@ -39,7 +39,8 @@ export default {
   components: {
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
+    LPopup
   },
   data () {
     const markers = []
