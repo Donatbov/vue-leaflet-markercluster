@@ -3,7 +3,7 @@
     <LMap
       class="map"
       :zoom="zoom"
-      :max-zoom="19"
+      :max-zoom="maxZoomLevel"
       :use-global-leaflet="true"
       :center="center"
       :options="mapOptions"
@@ -13,10 +13,12 @@
         :attribution="attribution"
       />
       <LMarker
-        v-for="object in objectList"
-        :key="object.id"
-        :lat-lng="object.latlng"
-      />
+        v-for="marker in markers"
+        :key="marker.id"
+        :lat-lng="marker.latlng"
+      >
+        <LPopup :content="marker.text" />
+      </LMarker>
     </LMap>
   </div>
 </template>
@@ -26,6 +28,12 @@ import 'leaflet/dist/leaflet.css'
 import { latLng } from 'leaflet'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 
+function rand (n) {
+  const max = n + 0.1
+  const min = n - 0.1
+  return Math.random() * (max - min) + min
+}
+
 export default {
   name: 'App',
   components: {
@@ -34,28 +42,40 @@ export default {
     LMarker
   },
   data () {
+    const markers = []
+    const nbLocationWithManyMarkers = 10
+    const nbLocationWithASingleMarker = 10
+    const nbMarkersAtSamePosition = 10
+    const centerLat = 45.64401457919508
+    const centerLng = 5.867792155632818
+    for (let i = 0; i < nbLocationWithManyMarkers; i++) {
+      const point = {
+        id: i,
+        latlng: latLng(rand(centerLat), rand(centerLng)),
+        text: 'Hola ' + i
+      }
+      for (let i = 0; i < nbMarkersAtSamePosition; i++) {
+        markers.push(point)
+      }
+    }
+    for (let i = nbLocationWithManyMarkers; i < nbLocationWithManyMarkers + nbLocationWithASingleMarker; i++) {
+      const point = {
+        id: i,
+        latlng: latLng(rand(centerLat), rand(centerLng)),
+        text: 'Hola ' + i
+      }
+      markers.push(point)
+    }
     return {
-      zoom: 8,
-      center: latLng(46.35312518717163, 6.784678858852737),
+      markers,
+      zoom: 11,
+      center: latLng(centerLat, centerLng),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      maxZoomLevel: 19, // Map on the url above don't load after this zoom-level
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       mapOptions: {
         zoomSnap: 0.5
-      },
-      objectList: [
-        {
-          latlng: latLng(46.7934204, 7.1568772)
-        },
-        {
-          latlng: latLng(47.3625149, 7.3499802)
-        },
-        {
-          latlng: latLng(46.3179423, 7.9809608)
-        },
-        {
-          latlng: latLng(46.9976485, 6.9365306)
-        }
-      ]
+      }
     }
   }
 }
