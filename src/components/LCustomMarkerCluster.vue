@@ -1,5 +1,5 @@
 <script>
-// import 'leaflet.markercluster/dist/MarkerCluster.css'
+// import 'leaflet.markercluster/dist/MarkerCluster.css' // TODO: To make it works (if imported, animations seems works but single markers move weirdly on zoom...)
 import { onMounted, ref, inject, nextTick } from 'vue'
 import { render } from '@vue-leaflet/vue-leaflet/src/functions/layer'
 import { setup as layerGroupSetup } from '@vue-leaflet/vue-leaflet/src/functions/layerGroup'
