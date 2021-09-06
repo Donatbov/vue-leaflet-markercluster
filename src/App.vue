@@ -12,13 +12,19 @@
         :url="url"
         :attribution="attribution"
       />
-      <LMarker
-        v-for="marker in markers"
-        :key="marker.id"
-        :lat-lng="marker.latlng"
+      <LCustomMarkerCluster
+        :options="markerClusterOptions"
+        @clusterclick="clusterClick"
+        @ready="ready"
       >
-        <LPopup :content="marker.text" />
-      </LMarker>
+        <LMarker
+          v-for="marker in markers"
+          :key="marker.id"
+          :lat-lng="marker.latlng"
+        >
+          <LPopup :content="marker.text" />
+        </LMarker>
+      </LCustomMarkerCluster>
     </LMap>
   </div>
 </template>
@@ -27,6 +33,7 @@
 import 'leaflet/dist/leaflet.css'
 import { latLng } from 'leaflet'
 import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
+import LCustomMarkerCluster from '@/components/LCustomMarkerCluster'
 
 function rand (n) {
   const max = n + 0.1
@@ -37,6 +44,7 @@ function rand (n) {
 export default {
   name: 'App',
   components: {
+    LCustomMarkerCluster,
     LMap,
     LTileLayer,
     LMarker,
@@ -67,6 +75,7 @@ export default {
       }
       markers.push(point)
     }
+
     return {
       markers,
       zoom: 11,
@@ -76,7 +85,18 @@ export default {
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       mapOptions: {
         zoomSnap: 0.5
+      },
+      markerClusterOptions: { // Put here options handled by leaflet-markerCluster (https://github.com/Leaflet/Leaflet.markercluster#options)
+        animateAddingMarkers: true
       }
+    }
+  },
+  methods: {
+    clusterClick () {
+      console.log('cluster clicked!')
+    },
+    ready () {
+      console.log('cluster ready!')
     }
   }
 }
@@ -84,11 +104,6 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
   height: 95vh;
   width: 95vw;
 }
