@@ -54,7 +54,7 @@ export default {
     const markers = []
     const nbLocationWithManyMarkers = 10
     const nbLocationWithASingleMarker = 10
-    const nbMarkersAtSamePosition = 10
+    const nbMarkersAtSamePosition = 20
     const centerLat = 45.64401457919508
     const centerLng = 5.867792155632818
     for (let i = 0; i < nbLocationWithManyMarkers; i++) {
